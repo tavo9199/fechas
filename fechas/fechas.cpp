@@ -5,6 +5,7 @@
 #include <sstream>  
 
 using namespace std;
+
 class Datos {
 
 
@@ -12,14 +13,24 @@ private:
 	int anio, mes, dia;
 	string fecha;
 public:
+	void mostrar_en_pantalla();
+	Datos& operator ++();
 	void separar();
 	Datos(string _fecha)//hacemos un constructor
-	{
+	{ 
 		fecha = _fecha;
 
 	}
-	void mostrar_en_pantalla();
+	void validar();
 };
+
+Datos& Datos::operator ++ () 
+{ 
+	this->dia++;
+	validar();
+	return *this;
+}
+
 void Datos::separar() {
 	int contador=0;
 	string T; 
@@ -34,31 +45,28 @@ void Datos::separar() {
 	dia = stoi(datos[0]);
 	mes = stoi(datos[1]);
 	anio = stoi(datos[2]);
-	mostrar_en_pantalla();
 }
-void Datos::mostrar_en_pantalla()
+void Datos::mostrar_en_pantalla() {
+	cout << dia << " " << mes << " " << anio << endl;
+
+}
+void Datos::validar()
 {
 	
 
-	if (dia > 31)
+	if (dia > 31 )
 	{
-		cout << "El dia es incorrecto" << endl;
-	}
-	else
-	{
-		cout << "El dia es: " << dia << endl;
+		dia = 1;
+		mes ++;
 	}
 
 	if (mes > 12)
 	{
-		cout << "No exiten mas de 12 meses" << endl;
+		mes = 1;
+		anio++;
 	}
-	else
-	{
-		cout << "El mes es: " << mes << endl;
-	}
-
-	if (anio > 2100 || anio < 0)
+	
+	/*if (anio > 2100 || anio < 0)
 	{
 		cout << "O eres un viajero del tiempo o el anio es incorrecto" << endl;
 	}
@@ -74,7 +82,10 @@ void Datos::mostrar_en_pantalla()
 	{
 		cout << "El anio es bisiesto" << endl;
 	}
-	
+	if (dia > 28 && mes==02 && anio % 4 != 0 || (anio % 100 == 0 && anio % 400 != 0))
+	{
+		cout << "el anio no es bisiesto por lo que febrero no puede tener mas de 28 dias" << endl;
+	} */
 }
 
 int main() {
@@ -84,6 +95,12 @@ int main() {
 	cin >> _fecha;
 	Datos p1 = Datos(_fecha);
 	p1.separar();
+	for (int i = 0; i < 3; i++) 
+	{
+		++p1;
+		p1.mostrar_en_pantalla();
+
+	}
 
 	system("pause");
 	return 0;
